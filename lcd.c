@@ -2,7 +2,7 @@
  * Lab Section: 023
  * Assignment: Custom Lab Project
  * Functions for interfacing with the Nokia 5110 LCD Screen
- * Library adapted from http://echachik.blogspot.com/2014/09/nokia-5110-lcd-display-avr.html
+ * LCD library adapted from http://echachik.blogspot.com/2014/09/nokia-5110-lcd-display-avr.html
 */
 
 #include "includes/lcd.h"

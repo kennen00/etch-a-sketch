@@ -11,28 +11,37 @@
 #include <stdio.h>
 #include "includes/scheduler.h"
 #include "includes/display_sm.h"
+#include "includes/joystick_sm.h"
 
 // Implement scheduler code from PES.
 int main()
 {
+	DDRA = 0x00; PORTA = 0xFF;
 	DDRC = 0xFF; PORTC = 0x00;
 
 	unsigned long int DISP_calc = 25;
+	unsigned long int JOY_calc = 100;
 
-	unsigned long int tmpGCD = DISP_calc;
+	unsigned long int tmpGCD = findGCD(DISP_calc, JOY_calc);
 
 	unsigned long int GCD = tmpGCD;
 
 	unsigned long int DISP_period = DISP_calc/GCD;
+	unsigned long int JOY_period = JOY_calc/GCD;
 
-	static task task1;
-	task *tasks[] = { &task1};
+	static task task1, task2;
+	task *tasks[] = { &task1, &task2};
 	const unsigned short numTasks = sizeof(tasks)/sizeof(task*);
 
 	task1.state = DISP_Start;
 	task1.period = DISP_period;
 	task1.elapsedTime = DISP_period;
 	task1.TickFct = &DISP_TickFct;
+
+	task2.state = JOY_Start;
+	task2.period = JOY_period;
+	task2.elapsedTime = JOY_period;
+	task2.TickFct = &JOY_TickFct;
 
 	TimerSet(GCD);
 	TimerOn();
