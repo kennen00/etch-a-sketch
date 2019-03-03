@@ -8,9 +8,11 @@
 #include "includes/globals.h"
 #include "includes/joystick_sm.h"
 
-unsigned char globalY = 0;
 unsigned char globalX = 0;
+unsigned char globalY = 0;
 unsigned char localY = 0;
+unsigned char lastGlobalX = 0;
+unsigned char lastGlobalY = 0;
 
 int JOY_TickFct(int state) {
 	static unsigned char direction;	
@@ -21,6 +23,8 @@ int JOY_TickFct(int state) {
 			state = JOY_UPDATE;
 			break;
 		case JOY_UPDATE:
+			lastGlobalX = globalX;
+			lastGlobalY = globalY;
 			direction = GetDirection();
 			if (direction == UP) {
 				if (localY > 0) {

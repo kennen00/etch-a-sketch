@@ -5,8 +5,9 @@
  * ADC functions adapted from http://maxembedded.com/2011/06/the-adc-of-the-avr/
  */
 
- #include "includes/adc.h"
- #include <avr/io.h>
+#include <avr/io.h>
+#include "includes/adc.h"
+#include "includes/globals.h"
 
 void ADC_init() {
 	// AREF = AVcc
