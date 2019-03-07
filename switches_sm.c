@@ -11,8 +11,8 @@
 unsigned char action = 0;
 
 int SWIT_TickFct(int state) {
-	unsigned char draw = (PINC & 0x40) >> 6;
-	unsigned char erase = (PINC & 0x20) >> 5;
+	unsigned char draw = (tmpC & 0x20) >> 5;
+	unsigned char erase = (tmpC & 0x40) >> 6;
 
 	switch (state) {
 		case SWIT_Start:
@@ -20,9 +20,9 @@ int SWIT_TickFct(int state) {
 			state = SWIT_UPDATE;
 			break;
 		case SWIT_UPDATE:
-			if (draw && !erase) {
+			if (draw == 0x01 && erase == 0x00) {
 				action = DRAW;
-			} else if (!draw && erase) {
+			} else if (draw == 0x00 && erase == 0x01) {
 				action = ERASE;
 			} else {
 				action = MOVE;

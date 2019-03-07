@@ -13,12 +13,15 @@
 #include "includes/joystick_sm.h"
 #include "includes/reset_sm.h"
 #include "includes/switches_sm.h"
+#include "includes/globals.h"
+
+unsigned char tmpC = 0;
 
 // Implement scheduler code from PES.
 int main()
 {
 	DDRA = 0x00; PORTA = 0xFF;
-	DDRC = 0x0F; PORTC = 0x00;
+	DDRC = 0x0F; PORTC = 0xF0;
 
 	unsigned long int DISP_calc = 50;
 	unsigned long int JOY_calc = 100;
@@ -65,6 +68,7 @@ int main()
 
 	unsigned short i;
 	while(1) {
+		tmpC = ~PINC;
 		for ( i = 0; i < numTasks; i++ ) {
 			if ( tasks[i]->elapsedTime == tasks[i]->period ) {
 				tasks[i]->state = tasks[i]->TickFct(tasks[i]->state);

@@ -14,4 +14,6 @@ extern unsigned char action;
 enum DIRECTION {IDLE, UP, DOWN, LEFT, RIGHT};
 enum ACTION {MOVE, DRAW, ERASE};
 
+extern unsigned char tmpC;
+
 #endif

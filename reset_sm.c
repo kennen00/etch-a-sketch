@@ -11,14 +11,14 @@
 unsigned char reset = 0;
 
 int RES_TickFct(int state) {
-	unsigned char button = ~PINC & 0x10;
+	unsigned char button = (tmpC & 0x10) >> 4;
 
 	switch (state) {
 		case RES_Start:
 			state = RES_IDLE;
 			break;
 		case RES_IDLE:
-			if (button) {
+			if (button == 0x01) {
 				reset = 1;
 				state = RES_WAIT;
 			} else {
@@ -26,11 +26,10 @@ int RES_TickFct(int state) {
 			}
 			break;
 		case RES_WAIT:
-			if (button) {
+			if (button == 0x01) {
 				reset = 0;
 				state = RES_WAIT;
 			} else {
-				reset = 0;
 				state = RES_IDLE;
 			}
 			break;
