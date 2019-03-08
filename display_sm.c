@@ -11,7 +11,6 @@
 
 int DISP_TickFct(int state) {	
 	static unsigned char screen[84][6] = {0};
-	static unsigned char lastByte = 0;
 
 	switch (state) {
 		case DISP_Start:
@@ -21,30 +20,29 @@ int DISP_TickFct(int state) {
 		case DISP_UPDATE:
 			if (reset) {
 				LCD_clear();
-				/*unsigned char i = 0, j = 0;
-				for (i = 0; i < 84; i++) {
-					for (j = 0; j < 6; j++) {
-						screen[i][j] = 0;
-						LCD_set_XY(i,j);
-						LCD_write_byte(0,0);
-					}
-				}*/
 				memset(screen, 0, sizeof(screen));
 			} else {
-	 			LCD_set_XY(globalX, globalY);
-				if (action == MOVE) {
-					LCD_set_XY(lastGlobalX, lastGlobalY);
-					screen[lastGlobalX][lastGlobalY] = lastByte;
-					LCD_write_byte(lastByte, 0);
-					lastByte = screen[globalX][globalY];
-					LCD_set_XY(globalX, globalY);
-					screen[globalX][globalY] |= (1 << localY);
-				} else if (action == DRAW) {
-	 				screen[globalX][globalY] |= (1 << localY);
-				} else if (action == ERASE) {
-	 				screen[globalX][globalY] &= ~(1 << localY);
+				// Refresh entire screen here to fix output glitching issues
+				for (unsigned char i = 0; i < 84; i++) {
+					for (unsigned char j = 0; j < 6; j++) {
+						LCD_set_XY(i, j);
+						LCD_write_byte(screen[i][j], 0);
+					}
 				}
-	 			LCD_write_byte(screen[globalX][globalY], 0);
+				LCD_set_XY(globalX, globalY);
+				if (action == DRAW) {
+	 				screen[globalX][globalY] |= (1 << localY);
+			 		LCD_write_byte(screen[globalX][globalY], 0);
+				} else if (action == ERASE) {
+					LCD_write_byte(screen[globalX][globalY] | (1 << localY), 0);
+	 				screen[globalX][globalY] &= ~(1 << localY);
+					LCD_set_XY(globalX, globalY);
+		 			LCD_write_byte(screen[globalX][globalY], 0);
+				} else if (action == MOVE) {
+					LCD_write_byte(screen[globalX][globalY] | (1 << localY), 0);
+					LCD_set_XY(lastGlobalX, lastGlobalY);
+					LCD_write_byte(screen[lastGlobalX][lastGlobalY], 0);
+				}
 			}
 			state = DISP_UPDATE;
 			break;

@@ -23,30 +23,40 @@ int JOY_TickFct(int state) {
 			state = JOY_UPDATE;
 			break;
 		case JOY_UPDATE:
-			lastGlobalX = globalX;
-			lastGlobalY = globalY;
 			direction = GetDirection();
 			if (direction == UP) {
 				if (localY > 0) {
 					localY--;
 				} else if (globalY > 0) {
+					lastGlobalY = globalY;
 					globalY--;
 					localY = 7;
+				} else {
+					lastGlobalY = globalY = 0;
 				}
 			} else if (direction == DOWN) {
 				if (localY < 7) {
 					localY++;
 				} else if (globalY < 5) {
+					lastGlobalY = globalY;
 					globalY++;
 					localY = 0;
+				} else {
+					lastGlobalY = globalY = 5;
 				}
 			} else if (direction == LEFT) {
 				if (globalX > 0) {
+					lastGlobalX = globalX;
 					globalX--;
+				} else {
+					lastGlobalX = globalX = 0;
 				}
 			} else if (direction == RIGHT) {
 				if (globalX < 83) {
+					lastGlobalX = globalX;
 					globalX++;
+				} else {
+					lastGlobalX = globalX = 83;
 				}
 			}
 			state = JOY_UPDATE;
