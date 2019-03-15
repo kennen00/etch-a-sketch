@@ -1,2 +1,2 @@
-# etch-a-sketch
-Final project for CS120B at UC Riverside
+# Digital Etch-A-Sketch
+A mechanical Etch A Sketch is a drawing toy that allows the user to turn knobs and create drawings on a screen using aluminum powder. For this project, this toy was adapted into a digital version using a Nokia LCD screen to display the drawing. The user can create a drawing by using a joystick to control the placement of the the cursor, and a switch can be enabled to draw when the cursor is moved. The user can also reset the screen with a button, and start a brand new drawing. Also, the user can use another switch to enable erasing, so that parts of a current drawing can be changed.
